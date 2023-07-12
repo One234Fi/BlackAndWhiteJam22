@@ -1,0 +1,89 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
+[ext_resource path="res://PlayerSpriteFrames.tres" type="SpriteFrames" id=2]
+[ext_resource path="res://Sounds/SFX/hitHurt.wav" type="AudioStream" id=3]
+[ext_resource path="res://Sounds/SFX/explosion.wav" type="AudioStream" id=4]
+[ext_resource path="res://Sounds/SFX/jump.wav" type="AudioStream" id=5]
+[ext_resource path="res://Scenes/Resources/Stopwatch.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scripts/HUD.gd" type="Script" id=7]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 14, 6 )
+
+[node name="Player" type="KinematicBody2D"]
+pause_mode = 1
+position = Vector2( 60, 30 )
+collision/safe_margin = 0.1
+script = ExtResource( 1 )
+jumpStrength = 400
+fallSpeed = 1000
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = ExtResource( 2 )
+animation = "stand"
+playing = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 2 )
+shape = SubResource( 2 )
+
+[node name="SquatTimer" type="Timer" parent="."]
+process_mode = 0
+wait_time = 0.1
+one_shot = true
+
+[node name="IdleTimer" type="Timer" parent="."]
+process_mode = 0
+wait_time = 4.0
+one_shot = true
+
+[node name="DeathTimer" type="Timer" parent="."]
+process_mode = 0
+wait_time = 4.0
+one_shot = true
+
+[node name="DamageTimer" type="Timer" parent="."]
+process_mode = 0
+wait_time = 0.3
+one_shot = true
+
+[node name="HUD" type="CanvasLayer" parent="."]
+script = ExtResource( 7 )
+
+[node name="TimerDisplay" type="Label" parent="HUD"]
+margin_right = 190.0
+margin_bottom = 20.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Death In: "
+
+[node name="Label" type="Label" parent="HUD"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -366.0
+margin_top = 3.0
+margin_right = -183.0
+margin_bottom = 21.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Press \"R\" to reload the level"
+
+[node name="Stopwatch" parent="HUD" instance=ExtResource( 6 )]
+margin_left = -72.0
+margin_right = -19.0
+align = 1
+
+[node name="Jump" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 5 )
+
+[node name="Damaged" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 3 )
+
+[node name="Death" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 4 )
+
+[connection signal="timeout" from="SquatTimer" to="." method="_on_SquatTimer_timeout"]
+[connection signal="timeout" from="IdleTimer" to="." method="_on_IdleTimer_timeout"]
+[connection signal="timeout" from="DeathTimer" to="." method="_on_DeathTimer_timeout"]
+[connection signal="timeout" from="DamageTimer" to="." method="_on_DamageTimer_timeout"]

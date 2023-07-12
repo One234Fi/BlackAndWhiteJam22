@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/No More Magic.mp3-1be9686c7bdd03b9249ce8f30136e999.mp3str"
+
+[deps]
+
+source_file="res://Sounds/Music/No More Magic.mp3"
+dest_files=[ "res://.import/No More Magic.mp3-1be9686c7bdd03b9249ce8f30136e999.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
